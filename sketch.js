@@ -2,10 +2,10 @@ let mySoundOne;
 let mic;
 let soundPlaying = false;
 let thresholdStart= 0.1;
-let thresholdStop= 0.02;
+let thresholdStop= 0.055;
 
 function preload() {
-  mySoundOne = loadSound("assets/Fine Arts Building.mp3");
+  mySoundOne = loadSound("assets/CREATIVECODINGMT.mp3");
 }
 
 function setup() {
