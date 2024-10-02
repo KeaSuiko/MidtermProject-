@@ -1,8 +1,8 @@
 let mySoundOne;
 let mic;
 let soundPlaying = false;
-let thresholdStart= 0.3;
-let thresholdStop= 0.2;
+let thresholdStart= 0.1;
+let thresholdStop= 0.02;
 
 function preload() {
   mySoundOne = loadSound("assets/Fine Arts Building.mp3");
@@ -26,8 +26,10 @@ function setup() {
 function canvasPressed() {
   if (mySoundOne.isPlaying()) {
     mySoundOne.stop();
+    soundPlaying = false;
   } else {
     mySoundOne.loop();
+    soundPlaying = true;
   }
 }
   
@@ -37,16 +39,14 @@ function draw() {
   let volume = mic.getLevel();
   console.log ("mic Volume" + volume);
 
-  //let playaudio = map(volume, 0, 1, 20, 100)
- // console.log ("mapped volume" + playaudio)
-
   if (volume > thresholdStart && !soundPlaying) {
-    mySoundOne.loop();} 
-    else {
-      if (volume < thresholdStop && soundPlaying) {
-        mySoundOne.stop();
-
-        //ellipse(width/2, height/2, playaudio, playaudio);
+    mySoundOne.loop();
+    soundPlaying = true;
+    console.log("Audio Started");
+  } 
+    else if (volume < thresholdStop && soundPlaying) {
+       mySoundOne.stop();
+soundPlaying = false;
+console.log("Sound Stopped");
     }
-   }
   }
