@@ -30,20 +30,23 @@ function setup() {
 
 function draw() {
   let volume = mic.getLevel();
-  console.log ("mic Volume" + volume);
+  //console.log ("mic Volume" + volume);
 //console.log(cc);
 
 if (volume > thresholdStart && !soundPlaying) {
+  cc= (cc+1) % 3; //loop through the sounds to cue different audios 
   outputDevice.send([176, cc, 127])
   soundPlaying = true;
   console.log("Audio Started");
 } 
  else if (volume < thresholdStop && soundPlaying) {
   outputDevice.send([176,cc, 0])
+  //could do outputDevice.send[(176, 0, 0)] and the other ones 
 soundPlaying = false;
 console.log("Sound Stopped");
  }
-cc= (cc+1) % 3; //loop through the sounds to cue different audios 
+
+console.log (cc)
 
 }
 
