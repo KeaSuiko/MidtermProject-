@@ -1,6 +1,9 @@
 let outputDevice; 
 let cc = 0;
 let mic;
+let soundPlaying = false;
+let thresholdStart= 0.1;
+let thresholdStop= 0.055;
   
 
 function setup() {
@@ -22,49 +25,26 @@ function setup() {
   .catch(function(error) {
     console.error("Error accessing MIDI devices");
   });
-  
+
 }
 
-function draw() {}
+function draw() {
+  let volume = mic.getLevel();
+  console.log ("mic Volume" + volume);
+//console.log(cc);
 
-
-function keyPressed() {
-    // Send a MIDI note on message
-    console.log(cc);
-
-    outputDevice.send([176, cc, 127]); //turning on the path that cues the different sounds 
-
-    // After a delay, send a MIDI note off message
-    setTimeout(function() {
-      outputDevice.send([176, cc, 0]);
-    }, 1000); 
+if (volume > thresholdStart && !soundPlaying) {
+  outputDevice.send([176, cc, 127])
+  soundPlaying = true;
+  console.log("Audio Started");
+} 
+ else if (volume < thresholdStop && soundPlaying) {
+  outputDevice.send([176,cc, 0])
+soundPlaying = false;
+console.log("Sound Stopped");
+ }
 cc= (cc+1) % 3; //loop through the sounds to cue different audios 
 
 }
 
 
-
-
-
-
-
-
-
-
-//function draw() {
-  //let volume = mic.getLevel();
- // console.log ("mic Volume" + volume);
-
-  //if (volume > thresholdStart && !soundPlaying) {
-   // outputDevice.send([176, 10, 10])
-    //mySoundOne.loop();
-   // soundPlaying = true;
-    //console.log("Audio Started");
- // } 
-   // else if (volume < thresholdStop && soundPlaying) {
-       // outputDevice.send([176,0, 10])
-       //mySoundOne.stop();
-//soundPlaying = false;
-//console.log("Sound Stopped");
-   // }
-  //}
